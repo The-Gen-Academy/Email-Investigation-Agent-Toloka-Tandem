@@ -82,7 +82,7 @@ class Workflow:
         )
         storage.enqueue("preflight-" + str(time.time_ns()), "preflight")
         self.thread = threading.Thread(
-            target=self._loop, name="signal-worker", daemon=True
+            target=self._loop, name="investigation-worker", daemon=True
         )
         self.thread.start()
 
@@ -218,7 +218,7 @@ class Workflow:
             dataset = self.toloka.request(
                 "POST",
                 f"/projects/{self.setup['project_id']}/datasets",
-                {"name": "Signal audit " + fingerprint(selected)[:8]},
+                {"name": "Email Investigation Agent audit " + fingerprint(selected)[:8]},
             )
             review["dataset_id"] = dataset["id"]
             storage.put("toloka", review)
@@ -287,7 +287,7 @@ class Workflow:
         result = self.tendem.call(
             "create_task",
             {
-                "name": "Signal: expert review " + case_id,
+                "name": "Email Investigation Agent: expert review " + case_id,
                 "description": request,
                 "conversation_id": task["conversation_id"],
             },

@@ -15,21 +15,21 @@ from phishguard.workflow import REQUIRED, Workflow, cases, price_cents
 ROOT = Path(__file__).resolve().parent
 load_dotenv(ROOT / ".env")
 st.set_page_config(
-    page_title="Signal | Human-supervised email investigation",
+    page_title="Email Investigation Agent | Human-supervised email investigation",
     page_icon="🛡️",
     layout="wide",
 )
 missing = [key for key in REQUIRED if not os.getenv(key, "").strip()]
 if missing:
     st.error(
-        "Signal cannot start. Set "
+        "Email Investigation Agent cannot start. Set "
         + ", ".join(missing)
         + " in .env and restart. All three API keys are mandatory."
     )
     st.stop()
 if not (ROOT / ".local/provider-setup.json").exists():
     st.error(
-        "Toloka setup is missing. Run python setup_pipeline.py once before starting Signal."
+        "Toloka setup is missing. Run python setup_pipeline.py once before starting Email Investigation Agent."
     )
     st.stop()
 
@@ -46,7 +46,7 @@ try:
 except (ValueError, RuntimeError, OSError) as error:
     st.error(str(error))
     st.stop()
-st.title("Signal")
+st.title("Email Investigation Agent")
 st.caption("Email investigation · automated coordination · human oversight")
 st.info(
     "AI triage → targeted expert review → independent quality audit → one evidence trail"
@@ -55,7 +55,7 @@ st.info(
 
 def queue(identifier: str, kind: str, payload: dict | None = None) -> None:
     storage.enqueue(identifier, kind, payload)
-    st.toast("Queued. Signal will continue automatically.")
+    st.toast("Queued. Email Investigation Agent will continue automatically.")
 
 
 @st.fragment(run_every="3s")
@@ -186,7 +186,7 @@ def dashboard():
 
     with attention_tab:
         st.write(
-            "Approve scope and spending here. Signal handles submission, monitoring, and retrieval."
+            "Approve scope and spending here. Email Investigation Agent handles submission, monitoring, and retrieval."
         )
         for service in ("Toloka", "Tendem"):
             st.caption(
@@ -255,7 +255,7 @@ def dashboard():
         for service, item in (("Toloka", review), ("Tendem", expert)):
             if item.get("status") in ("submitting", "approving"):
                 st.warning(
-                    f"{service}: submission in progress or outcome uncertain. Signal will not repeat this operation automatically."
+                    f"{service}: submission in progress or outcome uncertain. Email Investigation Agent will not repeat this operation automatically."
                 )
             if item.get("status") in ("failed", "needs_funding"):
                 st.error(
@@ -295,7 +295,7 @@ def dashboard():
             )
         st.write("**Security boundaries**")
         st.write(
-            "Only fictional, text-only emails are used. Signal never visits email links, opens attachments, sends email, or modifies a mailbox. Email text and expert reports are treated as untrusted evidence."
+            "Only fictional, text-only emails are used. Email Investigation Agent never visits email links, opens attachments, sends email, or modifies a mailbox. Email text and expert reports are treated as untrusted evidence."
         )
         st.write(
             "Toloka adds independent human judgment and quality control. Its platform security program does not certify an email as safe or make this app a production email-security gateway."

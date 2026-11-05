@@ -4,20 +4,24 @@ An AI agent for email investigation with human oversight. It examines
 email text, explains its assessments, and coordinates external reviews through
 Nebius, Toloka, and Tendem.
 
+## Architecture
+
+![Email Investigation Agent architecture](docs/architecture.png)
+
 ## How it works
 
 - **AI investigation:** A Nebius model selects tools to inspect emails, assess
   suspicious indicators, and identify cases that need additional judgment.
 - **Independent evaluation:** Toloka reviewers label selected emails and explain
-  their decisions. Signal compares those results with its original assessments.
-- **Expert review:** Tendem reviews ambiguous cases. Signal retrieves the report
+  their decisions. Email Investigation Agent compares those results with its original assessments.
+- **Expert review:** Tendem reviews ambiguous cases. Email Investigation Agent retrieves the report
   and reassesses the case while preserving the original assessment.
 - **Oversight:** The interface brings together cases, review approvals, quality
   comparisons, and activity. A background worker tracks reviews and retrieves results.
 
 ## Run locally
 
-Requires Python 3.11–3.14 and API keys for all three services.
+Requires Python 3.11â€“3.14 and API keys for all three services.
 
 ```powershell
 python -m venv .venv
@@ -38,6 +42,7 @@ review results automatically.
 
 ## Project structure
 
+- `docs/architecture.png`: System architecture diagram.
 - `app.py`: Streamlit interface.
 - `src/phishguard/`: Agent, investigation logic, provider clients, and workflow.
 - `setup_pipeline.py`: Toloka pipeline configuration.

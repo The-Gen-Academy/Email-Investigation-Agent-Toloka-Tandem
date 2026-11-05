@@ -1,1 +1,1 @@
-"""Signal investigation agent."""
+"""Email Investigation Agent investigation agent."""

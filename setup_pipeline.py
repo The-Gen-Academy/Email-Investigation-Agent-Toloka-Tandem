@@ -37,7 +37,7 @@ def main() -> None:
         matching = [
             p
             for p in projects
-            if p["name"] == "Signal security review" and p["status"] == "active"
+            if p["name"] == "Email Investigation Agent security review" and p["status"] == "active"
         ]
         if len(matching) == 1:
             project = matching[0]
@@ -53,7 +53,7 @@ def main() -> None:
             project = api.request(
                 "POST",
                 "/projects",
-                {"teamId": team_id, "name": "Signal security review"},
+                {"teamId": team_id, "name": "Email Investigation Agent security review"},
             )
         config["project_id"] = project["id"]
         save()
@@ -61,7 +61,7 @@ def main() -> None:
         dataset = api.request(
             "POST",
             f"/projects/{config['project_id']}/datasets",
-            {"name": "Signal independent review"},
+            {"name": "Email Investigation Agent independent review"},
         )
         config["dataset_id"] = dataset["id"]
         save()
@@ -102,7 +102,7 @@ def main() -> None:
             "POST",
             f"/projects/{config['project_id']}/pipelines/import",
             {
-                "name": "Signal independent email review",
+                "name": "Email Investigation Agent independent email review",
                 "graph": graph,
             },
         )
@@ -131,7 +131,7 @@ def main() -> None:
     estimate = api.estimate(config["pipeline_id"])
     print("Toloka pipeline ready. Forecast:", estimate["total"])
     print(
-        "Pipeline setup is complete. Start Signal to let the agent coordinate the investigation."
+        "Pipeline setup is complete. Start Email Investigation Agent to let the agent coordinate the investigation."
     )
 
 

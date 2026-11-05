@@ -48,7 +48,7 @@ def acquire_worker_lock():
     except OSError:
         handle.close()
         raise RuntimeError(
-            "Another Signal worker is already using this database"
+            "Another Email Investigation Agent worker is already using this database"
         ) from None
     return handle
 
