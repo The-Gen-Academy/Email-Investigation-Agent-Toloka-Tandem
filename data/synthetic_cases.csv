@@ -1,0 +1,11 @@
+id,sender,subject,body
+case01,planning@company.example,Planning meeting agenda,"Hi team, the agenda for Thursday is ready. Please bring your project updates to our regular planning meeting."
+case02,security@account-notice.example,Urgent account verification,Your corporate account will be disabled today. Enter your password at https://192.0.2.44/signin immediately to keep access.
+case03,billing@vendor.example,Updated payment instructions,Our banking details have changed for the next invoice. Please use the new account number in the updated instructions. Can you confirm the change with your usual vendor contact?
+case04,events@company.example,Quarterly town hall reminder,Reminder: the quarterly town hall is scheduled for Tuesday at 10:00. The agenda will be shared by the events team.
+case05,helpdesk@company.example,Password reset request,"We received a request to reset your password. If you did not request this, contact the IT desk using your saved internal contact information."
+case06,benefits-update@outside-notices.example,Action required: employee portal,The annual enrollment window closes tonight. Sign into https://benefits-company.example-login.example/now with your work password to avoid losing coverage.
+case07,invoices@vendor.example,Question about April invoice,Could you check invoice INV-1042? The amount in our records differs from the amount on the purchase order. Please reply through the usual vendor email thread.
+case08,alerts@company.example,New sign-in detected,A new sign-in to your account was detected. This notice does not include authentication logs or a verified header. Please check your account using your normal bookmarked site.
+case09,files@external-share.example,Shared project document awaiting review,A partner says they shared an updated project plan with you. The notification provides no verified workspace context and asks you to sign in using a new portal: https://workspace-notice.example/view . Check directly with the partner through your usual channel.
+case10,security@partner.example,Unfamiliar sign-in alert for partner account,"We detected a sign-in from an unfamiliar location. Review your recent activity using your saved sign-in page. This message contains no direct login link, and the sender cannot be authenticated from its body alone."

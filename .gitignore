@@ -1,0 +1,32 @@
+# Credentials and machine-specific configuration
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Runtime state, review results, and logs
+.local/
+*.log
+
+# Python environments and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Development caches and coverage
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

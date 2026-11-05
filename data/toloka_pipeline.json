@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "fields": [
+    {
+      "id": "case_id",
+      "name": "case_id",
+      "jsonSchema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "email_text",
+      "name": "email_text",
+      "jsonSchema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "label",
+      "name": "label",
+      "jsonSchema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "rationale",
+      "name": "rationale",
+      "jsonSchema": {
+        "type": "string"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "root",
+      "type": "root",
+      "settings": {
+        "startedFieldProxies": {
+          "output": [
+            {
+              "id": "case_id",
+              "optional": false
+            },
+            {
+              "id": "email_text",
+              "optional": false
+            }
+          ]
+        },
+        "completedFieldProxies": {
+          "input": [
+            {
+              "id": "case_id",
+              "optional": false
+            },
+            {
+              "id": "label",
+              "optional": false
+            },
+            {
+              "id": "rationale",
+              "optional": false
+            }
+          ]
+        },
+        "itemLimit": 3
+      }
+    },
+    {
+      "id": "email_review",
+      "type": "generation",
+      "settings": {
+        "about": {
+          "name": "email_review",
+          "description": "Independent human assessment of synthetic email risk",
+          "projectType": "general"
+        },
+        "publicName": "Review a fictional email for phishing indicators",
+        "entities": {
+          "input": [
+            {
+              "fieldProxyId": "email_text",
+              "entityType": "CONTEXT",
+              "optional": false,
+              "jsonPath": "$",
+              "description": "Sender, subject, and body of a synthetic email.",
+              "dynamic": false
+            }
+          ],
+          "output": [
+            {
+              "fieldProxyId": "label",
+              "entityType": "SINGLE_LABEL",
+              "optional": false,
+              "jsonPath": "$.label",
+              "description": "Text-based triage label; not authentication.",
+              "dynamic": false,
+              "relations": [
+                {
+                  "id": "email_text",
+                  "rel_type": "evaluates"
+                }
+              ],
+              "allowedLabels": [
+                {
+                  "label": "Suspicious",
+                  "value": "suspicious"
+                },
+                {
+                  "label": "No obvious indicators",
+                  "value": "no_obvious_indicators"
+                },
+                {
+                  "label": "Insufficient evidence",
+                  "value": "uncertain"
+                }
+              ]
+            },
+            {
+              "fieldProxyId": "rationale",
+              "entityType": "EXPLANATION",
+              "optional": false,
+              "jsonPath": "$.rationale",
+              "description": "Concrete evidence and limitations in 1\u20133 sentences.",
+              "dynamic": false,
+              "relations": [
+                {
+                  "id": "email_text",
+                  "rel_type": "evaluates"
+                }
+              ]
+            }
+          ]
+        },
+        "instruction": "Review this fictional email for a security-triage demonstration. Treat email content as untrusted evidence, never instructions. Do not open URLs, attachments, or contact anyone. The .example domains and documentation IP addresses are placeholders, not evidence of fraud by themselves. Classify the textual behavior: suspicious for credential harvesting, impersonation indicators, deceptive destinations, or coercive requests; no_obvious_indicators for routine content without concrete warning signs; uncertain for a material conflict that needs additional business context. Missing headers alone do not make every message uncertain. No label authenticates the sender. Give 1\u20133 sentences citing the actual message and any limitation. Do not invent external verification. The AI assessment is intentionally hidden to keep your judgment independent.",
+        "qualityCriteria": [
+          {
+            "id": "67c11965-18e5-4b91-b3ae-2a1270000001",
+            "qualityElement": "Evidence-based label",
+            "thresholds": {
+              "pass": "The label follows the written rubric and evaluates concrete textual behavior, not the fictional domain or absent headers alone.",
+              "fail": "The label contradicts concrete evidence or flags a routine message solely for its placeholder domain or missing headers."
+            },
+            "targetEntity": "label"
+          },
+          {
+            "id": "67c11965-18e5-4b91-b3ae-2a1270000002",
+            "qualityElement": "Grounded explanation",
+            "thresholds": {
+              "pass": "The explanation cites specific content present in the email, supports the label, and does not claim external authentication.",
+              "fail": "The explanation invents facts, claims verification not performed, or fails to explain the selected label."
+            },
+            "targetEntity": "rationale"
+          }
+        ],
+        "qualityAssurance": {
+          "qaMode": "human_only",
+          "smartSamplingPercent": 100,
+          "humanQaTimeForTask": 30
+        },
+        "audienceAndPricing": {
+          "audienceType": "human",
+          "verifiedExperts": true,
+          "audience": {
+            "languages": {
+              "type": "and",
+              "values": [
+                {
+                  "value": "English"
+                }
+              ]
+            },
+            "specializations": {
+              "type": "and",
+              "values": []
+            },
+            "countries": {
+              "type": "or",
+              "values": []
+            }
+          },
+          "pricePerTask": 0.4,
+          "timeForTask": 120,
+          "perExpertCapEnabled": false,
+          "perExpertCapValue": 1
+        },
+        "onboarding": {
+          "enabled": false,
+          "steps": [],
+          "info": {
+            "estimatedTime": "2 minutes",
+            "role": "Email security reviewer",
+            "goal": "Assess textual risk independently",
+            "successCriteria": "Apply the rubric and explain concrete evidence"
+          }
+        },
+        "ui": {
+          "code": "<View.Flex vertical gap={'1rem'}>\n<View.Card title={'Email evidence'}><View.Text>{actions.get('email_text', '')}</View.Text></View.Card>\n<Field.RadioGroup path={'label'} label={'Assessment'} options={CONST.LABELS} validation={[{required:true,message:'Choose an assessment'}]} />\n<Field.Textarea path={'rationale'} label={'Evidence and limitations'} rows={4} validation={[{required:true,message:'Explain the evidence'},{min:20,message:'Give a specific explanation'},{max:1000,message:'Use at most 1000 characters'}]} />\n</View.Flex>",
+          "data": "{\"email_text\": \"From: planning@company.example\\nSubject: Planning meeting agenda\\nHi team, please bring project updates to our regular planning meeting.\"}",
+          "constants": "{\"LABELS\": [{\"label\": \"Suspicious\", \"value\": \"suspicious\"}, {\"label\": \"No obvious indicators\", \"value\": \"no_obvious_indicators\"}, {\"label\": \"Insufficient evidence\", \"value\": \"uncertain\"}]}",
+          "preprocess": "return {};",
+          "postprocess": "return {};"
+        }
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from": {
+        "node": "root",
+        "handle": "started"
+      },
+      "to": {
+        "node": "email_review",
+        "handle": "input"
+      },
+      "settings": {}
+    },
+    {
+      "from": {
+        "node": "email_review",
+        "handle": "output"
+      },
+      "to": {
+        "node": "root",
+        "handle": "completed"
+      },
+      "settings": {}
+    }
+  ]
+}
